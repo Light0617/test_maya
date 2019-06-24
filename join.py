@@ -216,4 +216,8 @@ def setJointOrientation():
       
 def deleteJoints():
     base.select(deselect = True)
-    base.delete(base.ls('RIG'))  
+    base.delete(base.ls('RIG'))       
+        
+        
+        
+        
