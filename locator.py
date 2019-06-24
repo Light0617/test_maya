@@ -1,27 +1,19 @@
 import maya.cmds as base
 
-##############################################
-##            Locators class                ##
-## Creates all the Locators					##
-##############################################
 
-# create the input fields for the amount of spines and fingers
 def createFields(spineValue, fingerValue):    
     global spineCount
     global fingerCount
     
     print spineValue
     
-    #spineCount = 4
-    #fingerCount = 5
-    #spineCount = spineValue
-    #fingerCount = fingerValue
+
     
-# return the value from the spineCount int field
+
 def ReturnFingerAmount():
     return fingerCount
 
-# return the value from the fingerCount int field    
+   
 def ReturnSpineAmount():
    return spineCount   
 
@@ -29,7 +21,6 @@ def ReturnDoubleElbow():
     global _doubleElbow
     return _doubleElbow
 
-# Create the Locators
 def CreateLocators(spineValue, fingerValue, doubleElbow):
     
     global spineCount
@@ -43,26 +34,22 @@ def CreateLocators(spineValue, fingerValue, doubleElbow):
     
     print spineCount
     
-    # Check if the object 'Loc_Master' exists, if it does do nothing
-    # else create an empty ( em = True ) group and name it          
+        
     if base.objExists('Loc_Master'):
         print 'Loc_Master already exists'
     else:
         base.group(em = True, name = "Loc_Master")
     
-    # Create a new spaceLocator and store it in the var root
-    # Scale it down and move it, parent it to the group    
+ 
     root = base.spaceLocator(n = "Loc_ROOT")    
     base.scale(0.1,0.1,0.1, root)
     base.move(0,1.5,0, root)
     base.parent(root, "Loc_Master")
 
     createSpine()
-
-# create the spine function    
+  
 def createSpine():
     
-    # simple for loop, check how many spines we need to create
     for i in range(0, spineCount):
         spine = base.spaceLocator(n = 'Loc_SPINE_' + str(i))
         base.scale(0.1, 0.1, 0.1, spine)
@@ -78,7 +65,7 @@ def createSpine():
     createLegs(1)
     createLegs(-1)
     
-    # set colors of the objects
+
     setColors()
     
 def createHead():
@@ -99,7 +86,7 @@ def createHead():
     base.scale(1,1,1, head)
     base.move(0, 2 + (0.25 * spineCount),0, head)  
     
-    ## jaw
+
     jawEnd = base.spaceLocator(n = 'Loc_Jaw_End')
     jawStart = base.spaceLocator(n = 'Loc_Jaw_Start')
     base.parent(jawStart, 'Loc_Head')
@@ -124,26 +111,25 @@ def createLegs(side):
         base.parent(upperLeg, 'L_Leg_GRP')
         
         
-        ## lower leg
+
         lowerLeg = base.spaceLocator(n = 'Loc_L_LowerLeg')
         base.scale(0.1,0.1,0.1, lowerLeg)
         base.move(0.15,0.75, 0.05, lowerLeg)
         base.parent(lowerLeg, 'Loc_L_UpperLeg')
         
-        ## foot
+
         foot = base.spaceLocator(n = 'Loc_L_Foot')
         base.scale(0.1, 0.1, 0.1, foot)
         base.move(0.15, 0.2, 0, foot)
         base.parent(foot, 'Loc_L_LowerLeg')
         
-        ## football
         
         football = base.spaceLocator(n = 'Loc_L_FootBall')
         base.scale(0.1,0.1,0.1, football)
         base.move(0.15, 0, 0.15, football)
         base.parent(football, 'Loc_L_Foot')
         
-        ## toes
+
         
         toes = base.spaceLocator(n = 'Loc_L_Toes')
         base.scale(0.1,0.1,0.1, toes)
@@ -163,28 +149,25 @@ def createLegs(side):
         base.move(-0.15, 1.5, 0, upperLeg)
         base.parent(upperLeg, 'R_Leg_GRP')
         
-        # lower leg
+
         
         lowerLeg = base.spaceLocator(n = 'Loc_R_LowerLeg')
         base.scale(0.1,0.1,0.1, lowerLeg)
         base.move(-0.15, 0.75, 0.05, lowerLeg)
         base.parent(lowerLeg, 'Loc_R_UpperLeg')
         
-        # foot
         
         foot = base.spaceLocator(n = 'Loc_R_Foot')
         base.scale(0.1, 0.1, 0.1, foot)
         base.move(-0.15, 0.2, 0, foot)
         base.parent(foot, 'Loc_R_LowerLeg')
         
-        ## football
         
         football = base.spaceLocator(n = 'Loc_R_FootBall')
         base.scale(0.1,0.1,0.1, football)
         base.move(-0.15, 0, 0.15, football)
         base.parent(football, 'Loc_R_Foot')
-        
-        ## toes
+
         
         toes = base.spaceLocator(n = 'Loc_R_Toes')
         base.scale(0.1,0.1,0.1, toes)
@@ -194,26 +177,26 @@ def createLegs(side):
 def createArms(side):
     global editMode
    
-    if side == 1: # left
+    if side == 1: 
         if base.objExists('L_Arm_GRP'):
             print 'im not doing anything'
         else:
             L_arm = base.group(em = True, name = 'L_Arm_GRP')
             base.parent(L_arm, 'Loc_SPINE_' + str(spineCount - 1))
             
-            #clavicle start
+
             clavicle = base.spaceLocator(n = 'Loc_L_Clavicle')
             base.scale(0.1,0.1,0.1, clavicle)
             base.parent(clavicle, 'Loc_SPINE_'+ str(spineCount -1))
             base.move(0.1 * side, 1.5 + (0.25 * spineCount), 0.1, clavicle)
             
-            ## upperarm
+
             upperArm = base.spaceLocator(n = 'Loc_L_UpperArm')
             base.scale(0.1,0.1,0.1, upperArm)
             base.parent(upperArm, 'Loc_L_Clavicle')
             base.move(0.35 * side, 1.5 + (0.25 * spineCount), 0, upperArm)  
             
-            #elbow
+
             if (_doubleElbow == False):
                 elbow = base.spaceLocator(n = 'Loc_L_Elbow')
                 base.scale(0.1,0.1,0.1, elbow)
@@ -230,7 +213,6 @@ def createArms(side):
                 base.parent(elbow_2, elbow)        
                 base.move(0.62 * side, 1.98, -0.2, elbow_2)         
             
-            #wrist
             
             wrist = base.spaceLocator(n = 'Loc_L_Wrist')
             base.scale(0.1,0.1,0.1, wrist)
@@ -244,26 +226,26 @@ def createArms(side):
    
             createHands(1, wrist)
             
-    else: # right
+    else: 
         if base.objExists('R_Arm_GRP'):
             print 'im still not doing anything'
         else:
             R_arm = base.group(em = True, name = 'R_Arm_GRP')
             base.parent(R_arm, 'Loc_SPINE_' + str(spineCount - 1))
             
-            #clavicle start
+
             clavicle = base.spaceLocator(n = 'Loc_R_Clavicle')
             base.scale(0.1,0.1,0.1, clavicle)
             base.parent(clavicle, 'Loc_SPINE_'+ str(spineCount -1))
             base.move(0.1 * side, 1.5 + (0.25 * spineCount), 0.1, clavicle)
             
-            ## upperarm
+
             upperArm = base.spaceLocator(n = 'Loc_R_UpperArm')
             base.scale(0.1,0.1,0.1, upperArm)
             base.parent(upperArm, 'Loc_R_Clavicle')
             base.move(0.35 * side, 1.5 + (0.25 * spineCount), 0, upperArm)  
             
-            #elbow
+
             if (_doubleElbow == False):
                 elbow = base.spaceLocator(n = 'Loc_R_Elbow')
                 base.scale(0.1,0.1,0.1, elbow)
@@ -280,7 +262,7 @@ def createArms(side):
                 base.parent(elbow_2, elbow)        
                 base.move(0.62 * side, 1.98, -0.2, elbow_2)         
             
-            #wrist
+
             
             wrist = base.spaceLocator(n = 'Loc_R_Wrist')
             base.scale(0.1,0.1,0.1, wrist)
@@ -288,7 +270,7 @@ def createArms(side):
             
             base.move(0.35 * side, 1 + (0.25 * spineCount), 0, R_arm)           
             
-            #move wrist
+
             base.move(0.8 * side, 1.5, 0, wrist)
 
    
@@ -362,9 +344,8 @@ def mirrorLocators():
             pos = base.xform(l, q = True, t=True, ws = True)
             rot = base.xform(l, q = True, ro = True, ws = True)
             base.move(-pos[0], pos[1], pos[2], allRightLocators[i])
-        #
             
 def deleteLocators():
     nodes = base.ls("Loc_*")
-    base.delete(nodes)  
- 
+    base.delete(nodes)   
+  
