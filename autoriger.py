@@ -1,24 +1,25 @@
+import sys 
+
 import maya.cmds as base
 import Locators
 import Joints
-import SecondaryLocators as SL
-import Controller
-import Constraints
-import CreateIK
-import FaceJoints as FJ
+#import SecondaryLocators as SL
+#import Controller
+#import Constraints
+#import CreateIK
+#import FaceJoints as FJ
 import os
 
-## TODO: FOOTROLL
 
 
-# we reload all classes when this file is executed, else we would need to restart Maya after every change
-Locators = reload(Locators)
-Joints = reload(Joints)
-SL = reload(SL)
-Controller = reload(Controller)
-Constraints = reload(Constraints)
-CreateIK = reload(CreateIK)
-FJ  = reload(FJ)
+
+reload(Locators)
+reload(Joints)
+#SL = reload(SL)
+#Controller = reload(Controller)
+#Constraints = reload(Constraints)
+#CreateIK = reload(CreateIK)
+#FJ  = reload(FJ)
 
 class AutoRigger():
    
@@ -29,12 +30,7 @@ class AutoRigger():
         self.BuildUI()
        
     def BuildUI(self): 
-        #global spineValue 
-        ###########################################
-        #         Create the basic window        ##
-        ###########################################
-        
-        # Create a window with the name Auto Rigger
+
         
         base.window("Auto Rigger")
 
@@ -43,19 +39,18 @@ class AutoRigger():
         
         base.formLayout(form, edit = True, attachForm=((tabs, 'top',0), (tabs,'left', 0), (tabs, 'right', 0), (tabs, 'bottom',0)))
 
-        # set the layout of the window
 
         ch1 = base.rowColumnLayout(nc = 1, cal = (1, 'right'), adjustableColumn = True)
         
         base.image(w = 400, h = 100, image = os.path.dirname(os.path.realpath(__file__))+"\logo.jpg")
         settingsText = base.text('Settings', l = 'Rig Settings')
         base.separator(st = 'none')       
-        #base.text(l = 'Prefix', w = 100)
+        
         self.prefix = base.textFieldGrp(w = 100, text = 'test', editable = True)
         self.spineCount = base.intSliderGrp(l = "Spine Count", min = 1, max = 10, value = 4, step = 1, field = True)
-        #spineCount = base.intField(minValue = 1, maxValue = 10, value = 4)
+        
         self.fingerCount = base.intSliderGrp(l = "Finger Count", min = 1, max = 10, value = 5, step = 1, field = True)
-        #fingerCount = base.intField(minValue = 0, maxValue = 10, value = 5)
+        
         base.separator(h = 10, st = 'none')    
         self.doubleElbow = base.checkBox(l = 'Double Elbow', align = 'left' )
         
@@ -67,17 +62,17 @@ class AutoRigger():
         base.separator(st = 'none')
         base.button(l = "Create Secondary Locators", w = 200, c = "SL.SecondaryLocators()")
         base.separator(st = 'none')
-        base.button(l = "Mirror L->R", w = 200, c = "Locators.mirrorLocators()")
+        base.button(l = "Mirror L->R", w = 200, c = "AutoRigger.Locators.mirrorLocators()")
         base.separator(st = 'none', h = 20)
         base.button(l = "Create Facial Locators", w = 200, c = self.FaceLocators)
         base.separator(st = 'none')        
-        base.button(l = "Delete All Locators", w = 200, c = "Locators.deleteLocators()")
+        base.button(l = "Delete All Locators", w = 200, c = "AutoRigger.Locators.deleteLocators()")
         
         base.setParent('..')        
         ch3 = base.rowColumnLayout(nc = 1, cal = (1, 'right'), adjustableColumn = True)
         
         base.separator(st = 'none')    
-        base.button(l = "Joints Window", w = 200, c = "Joints.CreateJointsWindow()")
+        base.button(l = "Joints Window", w = 200, c = "AutoRigger.Joints.CreateJointsWindow()")
         base.separator(st = 'none')    
         
         base.setParent('..')
@@ -98,7 +93,7 @@ class AutoRigger():
         
         base.tabLayout(tabs, edit = True, tabLabel = ((ch1, 'Settings'), (ch2, 'Locators'), (ch3, 'Body Rig'), (ch4, 'Face Rig'), (ch5, 'Finalize') ))
                
-        # show the actual window
+        
         base.showWindow()
     
     def NextTab(self, void):
